@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: example-cluster 
+  namespace: kubeflow
+spec:
+  gateways:
+    - kubeflow-gateway
+  hosts:
+    - "*"
+  http:
+    - match:
+        - uri:
+            prefix: /example-cluster/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: example-cluster-ray-head-svc.ricliu.svc.cluster.local
+            port:
+              number: 8265
